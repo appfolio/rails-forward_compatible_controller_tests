@@ -7,7 +7,7 @@ Backport Rails 5 style controller/integration testing syntax using kwargs to Rai
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'controller-testing-kwargs'
+gem 'controller-testing-kwargs', require: false
 ```
 
 And then execute:
@@ -17,6 +17,12 @@ And then execute:
 Or install it yourself as:
 
     $ gem install controller-testing-kwargs
+
+At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar file add the following line:
+
+```ruby
+require 'controller/testing/kwargs'
+```
 
 ## Usage
 
