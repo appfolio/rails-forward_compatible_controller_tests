@@ -84,6 +84,12 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
       end
     end
 
+    define_method("test_#{verb}_old_headers_only__raises_exception") do
+      assert_raise Exception do
+        send(verb.to_sym, '/kwargs/test_kwargs', nil, 'Hello': 'world')
+      end
+    end
+
     define_method("test_#{verb}_new_headers_only") do
       send(verb.to_sym, '/kwargs/test_kwargs', headers: { 'Hello': 'world' })
       if @response.body.size > 0
@@ -133,6 +139,12 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
         refute response['xhr']
       else
         assert_equal 'head', verb
+      end
+    end
+
+    define_method("test_#{verb}_old_params_and_headers__raises_exception") do
+      assert_raise Exception do
+        send(verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' })
       end
     end
 
