@@ -63,6 +63,11 @@ module Controller
           super(action, request_params, request_headers)
         end
       end
+
+      def xhr(request_method, action, parameters = nil, *args)
+        raise Exception ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception?
+        super(request_method, action, parameters, *args)
+      end
     end
   end
 end
