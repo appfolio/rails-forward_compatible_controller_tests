@@ -15,6 +15,18 @@ class KwargsControllerTest < ActionController::TestCase
       refute assigns(:xhr)
     end
 
+    define_method("test_#{verb}_old_params_only__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        send(verb.to_sym, :test_kwargs, hello: 'world')
+      end
+      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      assert_nil assigns(:hello_header)
+      refute assigns(:xhr)
+    end
+
+
     define_method("test_#{verb}_old_params_only__raises_exception") do
       assert_raise Exception do
         send(verb.to_sym, :test_kwargs, hello: 'world')
@@ -37,6 +49,18 @@ class KwargsControllerTest < ActionController::TestCase
       assert assigns(:xhr)
     end
 
+    define_method("test_xhr_#{verb}_old_params_only__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        xhr verb.to_sym, :test_kwargs, hello: 'world'
+      end
+      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      assert_nil assigns(:hello_header)
+      assert assigns(:xhr)
+    end
+
+
     define_method("test_xhr_#{verb}_old_params_only__raises_exception") do
       assert_raise Exception do
         xhr verb.to_sym, :test_kwargs, hello: 'world'
@@ -54,6 +78,17 @@ class KwargsControllerTest < ActionController::TestCase
       Controller::Testing::Kwargs.ignore
 
       send(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
+      assert_equal('world', assigns(:hello_header))
+      assert_equal({}, assigns(:params))
+      refute assigns(:xhr)
+    end
+
+    define_method("test_#{verb}_old_headers_only__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        send(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
+      end
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
       refute assigns(:xhr)
@@ -81,12 +116,22 @@ class KwargsControllerTest < ActionController::TestCase
       assert assigns(:xhr)
     end
 
+    define_method("test_xhr_#{verb}_old_headers_only__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        xhr(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
+      end
+      assert_equal('world', assigns(:hello_header))
+      assert_equal({}, assigns(:params))
+      assert assigns(:xhr)
+    end
+
     define_method("test_xhr_#{verb}_old_headers_only__raises_exception") do
       assert_raise Exception do
         xhr(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
       end
     end
-
 
     define_method("test_xhr_#{verb}_new_headers_only") do
       send(verb.to_sym, :test_kwargs, xhr: true, headers: { 'Hello': 'world' })
@@ -99,6 +144,17 @@ class KwargsControllerTest < ActionController::TestCase
       Controller::Testing::Kwargs.ignore
 
       send(verb.to_sym, :test_kwargs, { hello: 'world' }, { 'Hello': 'world' })
+      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      assert_equal('world', assigns(:hello_header))
+      refute assigns(:xhr)
+    end
+
+    define_method("test_#{verb}_old_params_and_headers__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        send(verb.to_sym, :test_kwargs, { hello: 'world' }, { 'Hello': 'world' })
+      end
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_equal('world', assigns(:hello_header))
       refute assigns(:xhr)
@@ -121,6 +177,17 @@ class KwargsControllerTest < ActionController::TestCase
       Controller::Testing::Kwargs.ignore
 
       xhr verb.to_sym, :test_kwargs, { hello: 'world' }, { 'Hello': 'world' }
+      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      assert_equal('world', assigns(:hello_header))
+      assert assigns(:xhr)
+    end
+
+    define_method("test_xhr_#{verb}_old_params_and_headers__deprecated") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        xhr verb.to_sym, :test_kwargs, { hello: 'world' }, { 'Hello': 'world' }
+      end
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_equal('world', assigns(:hello_header))
       assert assigns(:xhr)
