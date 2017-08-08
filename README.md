@@ -43,6 +43,26 @@ get #{url_or_action}, xhr: true, params: params, headers: headers
 
 should work while you transition your test suite.
 
+## Modes of Operation
+
+Deprecation warnings will appear by default when executing statements that
+utilize the old method. Deprecation warnings can be disabled by adding the
+following to your appropriate test helper:
+
+```ruby
+Controller::Testing::Kwargs.ignore
+```
+
+The above is useful if you simply want to support the Rails 5 syntax. If
+instead you want to prevent new uses of the old syntax, add the following:
+
+```ruby
+Controller::Testing::Kwargs.raise_exception
+```
+
+The above is useful when you're done coverting the syntax but are not yet ready
+to make the switch to Rails 5.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
