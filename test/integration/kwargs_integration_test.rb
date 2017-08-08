@@ -180,6 +180,22 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
       end
     end
 
+    define_method("test_xhr_#{verb}_old_params_and_headers__outputs_deprecation") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_deprecated do
+        xhr verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' }
+      end
+      if @response.body.size > 0
+        response = JSON.parse(@response.body)
+        assert_equal({ 'hello' => 'world' }, response['params'])
+        assert_equal('world', response['hello_header'])
+        assert response['xhr']
+      else
+        assert_equal 'head', verb
+      end
+    end
+
     define_method("test_xhr_#{verb}_old_params_and_headers__raises_exception") do
       assert_raise Exception do
         xhr verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' }

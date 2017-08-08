@@ -7,9 +7,17 @@ module Controller
       ERROR_MESSAGE = 'Please use Rails 5 syntax. See: https://github.com/appfolio/controller-testing-kwargs'
 
       class <<self
-        @on_old = :ignore
+        @on_old = :deprecate
 
         attr_reader :on_old
+
+        def deprecate
+          @on_old = :warn
+        end
+
+        def deprecated?
+          @on_old == :warn
+        end
 
         def ignore
           @on_old = :ignore
@@ -60,12 +68,14 @@ module Controller
               Controller::Testing::Kwargs.instance_variable_set(:@on_old, previous_value)
             end
           end
+          ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated?
           super(action, request_params, request_headers)
         end
       end
 
       def xhr(request_method, action, parameters = nil, *args)
         raise Exception ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception?
+        ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated?
         super(request_method, action, parameters, *args)
       end
     end
