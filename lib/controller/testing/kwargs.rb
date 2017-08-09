@@ -20,7 +20,7 @@ module Controller
         end
 
         def ignore
-          @action = :ignore
+          @action = nil
         end
 
         def raise_exception
@@ -29,6 +29,18 @@ module Controller
 
         def raise_exception?
           @action == :raise_exceptioon
+        end
+
+        private
+
+        def with_ignore
+          previous_action = @action
+          @action = nil
+          begin
+            yield
+          ensure
+            @action = previous_action
+          end
         end
       end
 
@@ -60,15 +72,9 @@ module Controller
           raise Exception, ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception? && old_method
           ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated? && old_method
 
-          if xhr
-            previous_action = Controller::Testing::Kwargs.action
-            Controller::Testing::Kwargs.ignore
-            begin
-              return xhr(method, action, request_params, request_headers)
-            ensure
-              Controller::Testing::Kwargs.instance_variable_set(:@action, previous_action)
-            end
-          end
+          Controller::Testing::Kwargs.send(:with_ignore) do
+            return xhr(method, action, request_params, request_headers)
+          end if xhr
           super(action, request_params, request_headers)
         end
       end
