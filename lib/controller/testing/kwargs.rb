@@ -58,6 +58,7 @@ module Controller
           end
 
           raise Exception, ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception? && old_method
+          ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated? && old_method
 
           if xhr
             previous_value = Controller::Testing::Kwargs.on_old
@@ -68,7 +69,6 @@ module Controller
               Controller::Testing::Kwargs.instance_variable_set(:@on_old, previous_value)
             end
           end
-          ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated?
           super(action, request_params, request_headers)
         end
       end
