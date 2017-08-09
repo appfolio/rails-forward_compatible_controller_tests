@@ -205,5 +205,16 @@ class KwargsControllerTest < ActionController::TestCase
       assert_equal('world', assigns(:hello_header))
       assert assigns(:xhr)
     end
+
+    define_method("test_xhr_#{verb}_new_params_and_headers__does_not_output_warning") do
+      Controller::Testing::Kwargs.deprecate
+
+      assert_not_deprecated do
+        send(verb.to_sym, :test_kwargs, xhr: true, params: { hello: 'world' }, headers: { 'Hello': 'world' })
+      end
+      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      assert_equal('world', assigns(:hello_header))
+      assert assigns(:xhr)
+    end
   end
 end
