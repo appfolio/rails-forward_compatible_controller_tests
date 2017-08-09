@@ -1,4 +1,4 @@
-# Controller::Testing::Kwargs
+# Rails::ForwardCompatibleControllerTests
 
 Backport Rails 5 style controller/integration testing syntax using kwargs to Rails 4
 
@@ -50,14 +50,14 @@ utilize the old method. Deprecation warnings can be disabled by adding the
 following to your appropriate test helper:
 
 ```ruby
-Controller::Testing::Kwargs.ignore
+Rails::ForwardCompatibleControllerTests.ignore
 ```
 
 The above is useful if you simply want to support the Rails 5 syntax. If
 instead you want to prevent new uses of the old syntax, add the following:
 
 ```ruby
-Controller::Testing::Kwargs.raise_exception
+Rails::ForwardCompatibleControllerTests.raise_exception
 ```
 
 The above is useful when you're done coverting the syntax but are not yet ready

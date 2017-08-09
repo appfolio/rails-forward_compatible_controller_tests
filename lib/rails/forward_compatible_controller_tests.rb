@@ -1,9 +1,8 @@
 require "rails/forward_compatible_controller_tests/version"
 require "rails/test_help"
 
-module Controller
-  module Testing
-    module Kwargs
+module Rails
+  module ForwardCompatibleControllerTests
       ERROR_MESSAGE = 'Please use Rails 5 syntax. See: https://github.com/appfolio/controller-testing-kwargs'
 
       class <<self
@@ -69,10 +68,10 @@ module Controller
             old_method = true
           end
 
-          raise Exception, ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception? && old_method
-          ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated? && old_method
+          raise Exception, ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception? && old_method
+          ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
 
-          Controller::Testing::Kwargs.send(:with_ignore) do
+          ForwardCompatibleControllerTests.send(:with_ignore) do
             return xhr(method, action, request_params, request_headers)
           end if xhr
           super(action, request_params, request_headers)
@@ -80,13 +79,12 @@ module Controller
       end
 
       def xhr(request_method, action, parameters = nil, *args)
-        raise Exception ERROR_MESSAGE if Controller::Testing::Kwargs.raise_exception?
-        ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if Controller::Testing::Kwargs.deprecated?
+        raise Exception ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception?
+        ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated?
         super(request_method, action, parameters, *args)
       end
     end
-  end
 end
 
-ActionController::TestCase.prepend(Controller::Testing::Kwargs)
-ActionDispatch::IntegrationTest.prepend(Controller::Testing::Kwargs)
+ActionController::TestCase.prepend(Rails::ForwardCompatibleControllerTests)
+ActionDispatch::IntegrationTest.prepend(Rails::ForwardCompatibleControllerTests)

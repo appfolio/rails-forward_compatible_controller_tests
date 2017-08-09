@@ -5,7 +5,7 @@ require 'rails/forward_compatible_controller_tests/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "controller-testing-kwargs"
-  spec.version       = Controller::Testing::Kwargs::VERSION
+  spec.version       = Rails::ForwardCompatibleControllerTests::VERSION
   spec.authors       = ["Chad Shaffer"]
   spec.email         = ["chad.shaffer@mycase.com"]
 

@@ -2,12 +2,12 @@ require 'test_helper'
 
 class KwargsIntegrationTest < ActionDispatch::IntegrationTest
   def setup
-    Controller::Testing::Kwargs.raise_exception
+    Rails::ForwardCompatibleControllerTests.raise_exception
   end
 
   %w[get post patch put head delete].each do |verb|
     define_method("test_#{verb}_old_params_only") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       send(verb.to_sym, '/kwargs/test_kwargs', hello: 'world')
       if @response.body.size > 0
@@ -63,7 +63,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_xhr_#{verb}_old_params_only") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       xhr verb.to_sym, '/kwargs/test_kwargs', hello: 'world'
       if @response.body.size > 0
@@ -95,7 +95,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_#{verb}_old_headers_only") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       send(verb.to_sym, '/kwargs/test_kwargs', nil, 'Hello': 'world')
       if @response.body.size > 0
@@ -127,7 +127,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_xhr_#{verb}_old_headers_only") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       xhr(verb.to_sym, '/kwargs/test_kwargs', nil, 'Hello': 'world')
       if @response.body.size > 0
@@ -159,7 +159,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_#{verb}_old_params_and_headers") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       send(verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' })
       if @response.body.size > 0
@@ -191,7 +191,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_xhr_#{verb}_old_params_and_headers") do
-      Controller::Testing::Kwargs.ignore
+      Rails::ForwardCompatibleControllerTests.ignore
 
       xhr verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' }
       if @response.body.size > 0
@@ -205,7 +205,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     define_method("test_xhr_#{verb}_old_params_and_headers__outputs_deprecation") do
-      Controller::Testing::Kwargs.deprecate
+      Rails::ForwardCompatibleControllerTests.deprecate
 
       assert_deprecated do
         xhr verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' }
