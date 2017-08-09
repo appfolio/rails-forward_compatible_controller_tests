@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Output deprecation warnings by default -- this should have been the case previously
+  but a typo prevented it from being so
+
+
 ## [1.0.1] - 2017-08-08
 
 ### Fixed
