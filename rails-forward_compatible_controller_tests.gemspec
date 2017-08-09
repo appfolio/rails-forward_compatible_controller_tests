@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'rails/forward_compatible_controller_tests/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "controller-testing-kwargs"
+  spec.name          = "rails-forward_compatible_controller_tests"
   spec.version       = Rails::ForwardCompatibleControllerTests::VERSION
   spec.authors       = ["Chad Shaffer"]
   spec.email         = ["chad.shaffer@mycase.com"]
 
   spec.summary       = %q{Back-porting Rails 5 controller & integration tests into Rails 4}
   spec.description   = %q{Makes upgrading to Rails 5 from Rails 4 easier}
-  spec.homepage      = "https://github.com/appfolio/controller-testing-kwargs"
+  spec.homepage      = "https://github.com/appfolio/rails-forward_compatible_controller_tests"
   spec.license       = "MIT"
 
   spec.files         = Dir["{lib}/**/*", "LICENSE.txt", "Rakefile", "README.md"]

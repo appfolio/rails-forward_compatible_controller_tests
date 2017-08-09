@@ -3,7 +3,7 @@ require "rails/test_help"
 
 module Rails
   module ForwardCompatibleControllerTests
-    ERROR_MESSAGE = 'Please use Rails 5 syntax. See: https://github.com/appfolio/controller-testing-kwargs'
+    ERROR_MESSAGE = 'Please use Rails 5 syntax. See: https://github.com/appfolio/rails-forward_compatible_controller_tests'
 
     class <<self
       @action = :deprecation_warning

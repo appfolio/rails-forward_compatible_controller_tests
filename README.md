@@ -7,7 +7,7 @@ Backport Rails 5 style controller/integration testing syntax using kwargs to Rai
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'controller-testing-kwargs', require: false
+gem 'rails-forward_compatible_controller_tests', require: false
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install controller-testing-kwargs
+    $ gem install rails-forward_compatible_controller_tests
 
 At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar file add the following line:
 
@@ -71,7 +71,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/appfolio/controller-testing-kwargs.
+Bug reports and pull requests are welcome on GitHub at https://github.com/appfolio/rails-forward_compatible_controller_tests.
 
 ## License
 
