@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.0.0] - 2017-08-09
+
 - Rename gem from Controller::Testing::Kwargs to Rails::ForwardCompatibleControllerTests
 
 ## [1.0.3] - 2017-08-09
