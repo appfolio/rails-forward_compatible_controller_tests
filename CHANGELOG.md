@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.0.2] - 2017-08-09
+
 ### Fixed
 
 - Output deprecation warnings by default -- this should have been the case previously
