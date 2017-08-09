@@ -21,7 +21,7 @@ Or install it yourself as:
 At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar file add the following line:
 
 ```ruby
-require 'controller/testing/kwargs'
+require 'rails/forward_compatible_controller_tests'
 ```
 
 ## Usage

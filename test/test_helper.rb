@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../../test/dummy/config/environment.rb",  __FILE__)
 require "rails/test_help"
-require 'controller/testing/kwargs'
+require 'rails/forward_compatible_controller_tests'
 
 # Filter out Minitest backtrace while allowing backtrace from other libraries
 # to be shown.
