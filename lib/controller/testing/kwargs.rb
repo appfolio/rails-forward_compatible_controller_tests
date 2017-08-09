@@ -56,13 +56,13 @@ module Controller
             if request_params[:params].is_a?(Hash)
               request_params.merge!(request_params.delete(:params) || {})
               request_headers = request_params.delete(:headers) || request_headers
-            elsif request_params[:params]
+            elsif request_params.key?(:params)
               request_headers = request_params[:headers]
               request_params = request_params[:params]
-            elsif request_params[:headers]
+            elsif request_params.key?(:headers)
               request_headers = request_params[:headers]
               request_params = nil
-            else
+            elsif !xhr
               old_method = true
             end
           elsif request_headers.is_a?(Hash)

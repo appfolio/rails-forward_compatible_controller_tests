@@ -38,6 +38,30 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
       end
     end
 
+    define_method("test_#{verb}_new_blank_headers_only") do
+      send(verb.to_sym, '/kwargs/test_kwargs', headers: nil)
+      if @response.body.size > 0
+        response = JSON.parse(@response.body)
+        assert_equal({}, response['params'])
+        assert_nil response['hello_header']
+        refute response['xhr']
+      else
+        assert_equal 'head', verb
+      end
+    end
+
+    define_method("test_xhr_#{verb}_new_no_params_or_headers") do
+      send(verb.to_sym, '/kwargs/test_kwargs', xhr: true)
+      if @response.body.size > 0
+        response = JSON.parse(@response.body)
+        assert_equal({}, response['params'])
+        assert_nil response['hello_header']
+        assert response['xhr']
+      else
+        assert_equal 'head', verb
+      end
+    end
+
     define_method("test_xhr_#{verb}_old_params_only") do
       Controller::Testing::Kwargs.ignore
 
@@ -54,7 +78,7 @@ class KwargsIntegrationTest < ActionDispatch::IntegrationTest
 
     define_method("test_xhr_#{verb}_old_params_only__raises_exception") do
       assert_raise Exception do
-        send(verb.to_sym, '/kwargs/test_kwargs', xhr: true, hello: 'world' )
+        xhr verb.to_sym, '/kwargs/test_kwargs', hello: 'world'
       end
     end
 
