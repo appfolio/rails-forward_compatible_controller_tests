@@ -1,4 +1,4 @@
-# Controller::Testing::Kwargs
+# Rails::ForwardCompatibleControllerTests
 
 Backport Rails 5 style controller/integration testing syntax using kwargs to Rails 4
 
@@ -7,7 +7,7 @@ Backport Rails 5 style controller/integration testing syntax using kwargs to Rai
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'controller-testing-kwargs', require: false
+gem 'rails-forward_compatible_controller_tests', require: false
 ```
 
 And then execute:
@@ -16,12 +16,12 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install controller-testing-kwargs
+    $ gem install rails-forward_compatible_controller_tests
 
 At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar file add the following line:
 
 ```ruby
-require 'controller/testing/kwargs'
+require 'rails/forward_compatible_controller_tests'
 ```
 
 ## Usage
@@ -50,14 +50,14 @@ utilize the old method. Deprecation warnings can be disabled by adding the
 following to your appropriate test helper:
 
 ```ruby
-Controller::Testing::Kwargs.ignore
+Rails::ForwardCompatibleControllerTests.ignore
 ```
 
 The above is useful if you simply want to support the Rails 5 syntax. If
 instead you want to prevent new uses of the old syntax, add the following:
 
 ```ruby
-Controller::Testing::Kwargs.raise_exception
+Rails::ForwardCompatibleControllerTests.raise_exception
 ```
 
 The above is useful when you're done coverting the syntax but are not yet ready
@@ -71,7 +71,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/appfolio/controller-testing-kwargs.
+Bug reports and pull requests are welcome on GitHub at https://github.com/appfolio/rails-forward_compatible_controller_tests.
 
 ## License
 
