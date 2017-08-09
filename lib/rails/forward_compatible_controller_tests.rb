@@ -23,11 +23,11 @@ module Rails
       end
 
       def raise_exception
-        @old_syntax_strategy = :raise_exceptioon
+        @old_syntax_strategy = :raise_exception
       end
 
       def raise_exception?
-        @old_syntax_strategy == :raise_exceptioon
+        @old_syntax_strategy == :raise_exception
       end
 
       private
