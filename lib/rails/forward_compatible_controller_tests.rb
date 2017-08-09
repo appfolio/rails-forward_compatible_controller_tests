@@ -6,39 +6,39 @@ module Rails
     ERROR_MESSAGE = 'Please use Rails 5 syntax. See: https://github.com/appfolio/rails-forward_compatible_controller_tests'
 
     class <<self
-      @action = :deprecation_warning
+      @old_syntax_strategy = :deprecation_warning
 
-      attr_reader :action
+      attr_reader :old_syntax_strategy
 
       def deprecate
-        @action = :deprecation_warning
+        @old_syntax_strategy = :deprecation_warning
       end
 
       def deprecated?
-        @action == :deprecation_warning
+        @old_syntax_strategy == :deprecation_warning
       end
 
       def ignore
-        @action = nil
+        @old_syntax_strategy = nil
       end
 
       def raise_exception
-        @action = :raise_exceptioon
+        @old_syntax_strategy = :raise_exceptioon
       end
 
       def raise_exception?
-        @action == :raise_exceptioon
+        @old_syntax_strategy == :raise_exceptioon
       end
 
       private
 
       def with_ignore
-        previous_action = @action
-        @action = nil
+        previous_strategy = @old_syntax_strategy
+        @old_syntax_strategy = nil
         begin
           yield
         ensure
-          @action = previous_action
+          @old_syntax_strategy = previous_strategy
         end
       end
     end
