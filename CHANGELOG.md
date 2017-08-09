@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.0.3] - 2017-08-09
+
+### Fixed
+
+- Fix issue where deprecation warnings are output when using the new syntax with nil headers or
+  params
+
 ## [1.0.2] - 2017-08-09
 
 ### Fixed
