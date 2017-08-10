@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Raise exception with the proper message when calling `xhr` with
+  `raise_exception` enabled.
+
 ## [2.0.0] - 2017-08-09
 
 - Rename gem from Controller::Testing::Kwargs to Rails::ForwardCompatibleControllerTests
