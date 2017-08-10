@@ -79,7 +79,7 @@ module Rails
     end
 
     def xhr(request_method, action, parameters = nil, *args)
-      raise Exception ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception?
+      raise Exception, ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception?
       ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated?
       super(request_method, action, parameters, *args)
     end
