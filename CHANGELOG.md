@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.0.1] - 2017-08-10
+
 ### Fixed
 
 - Raise exception with the proper message when calling `xhr` with
