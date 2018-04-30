@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2018-04-30
+
+- Allow inclusion of the gem in Rails 5. In which case the gem does nothing.
+
 ## [2.0.1] - 2017-08-10
 
 ### Fixed
