@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.3.3
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run: bundle install
+
+      - run: bundle exec appraisal install
+
+      - run:
+          command: |
+            bundle exec appraisal rake test
