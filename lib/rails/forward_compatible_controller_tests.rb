@@ -86,5 +86,7 @@ module Rails
   end
 end
 
-ActionController::TestCase.prepend(Rails::ForwardCompatibleControllerTests)
-ActionDispatch::IntegrationTest.prepend(Rails::ForwardCompatibleControllerTests)
+if ActionPack.gem_version < Gem::Version.new('5.0.0')
+  ActionController::TestCase.prepend(Rails::ForwardCompatibleControllerTests)
+  ActionDispatch::IntegrationTest.prepend(Rails::ForwardCompatibleControllerTests)
+end

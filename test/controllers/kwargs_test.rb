@@ -1,6 +1,14 @@
 require 'test_helper'
 
-class KwargsControllerTest < ActionController::TestCase
+class DummyControllerTestClass; end
+
+test_class = if ActionPack.gem_version < Gem::Version.new('5.0.0')
+               ActionController::TestCase
+             else
+               DummyControllerTestClass
+             end
+
+class KwargsControllerTest < test_class
   def setup
     Rails::ForwardCompatibleControllerTests.raise_exception
   end
