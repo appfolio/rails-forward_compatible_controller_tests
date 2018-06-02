@@ -47,6 +47,7 @@ module Rails
       define_method(method) do |action, *args|
         request_params = args[0]&.dup
         request_headers = args[1]&.dup
+        request_flash = args[2]&.dup
 
         old_method = false
         xhr = false
@@ -55,16 +56,23 @@ module Rails
           if request_params[:params].is_a?(Hash)
             request_params.merge!(request_params.delete(:params) || {})
             request_headers = request_params.delete(:headers) || request_headers
+            request_flash = request_params.delete(:flash) || request_flash
           elsif request_params.key?(:params)
+            request_flash = request_params[:flash]
             request_headers = request_params[:headers]
             request_params = request_params[:params]
           elsif request_params.key?(:headers)
+            request_flash = request_params[:flash]
             request_headers = request_params[:headers]
+            request_params = nil
+          elsif request_params.key?(:flash)
+            request_flash = request_params[:flash]
+            request_headers = nil
             request_params = nil
           elsif !xhr
             old_method = true
           end
-        elsif request_headers.is_a?(Hash)
+        elsif request_headers.is_a?(Hash) || request_flash.is_a?(Hash)
           old_method = true
         end
 
@@ -72,9 +80,17 @@ module Rails
         ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
 
         ForwardCompatibleControllerTests.send(:with_ignore) do
-          return xhr(method, action, request_params, request_headers)
+          if self.class < ActionController::TestCase
+            return xhr(method, action, request_params, request_headers, request_flash)
+          else
+            return xhr(method, action, request_params, request_headers)
+          end
         end if xhr
-        super(action, request_params, request_headers)
+        if self.class < ActionController::TestCase
+          super(action, request_params, request_headers, request_flash)
+        else
+          super(action, request_params, request_headers)
+        end
       end
     end
 

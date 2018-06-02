@@ -20,6 +20,7 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, hello: 'world')
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -31,6 +32,7 @@ class KwargsControllerTest < test_class
       end
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -45,6 +47,7 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, params: { hello: 'world' })
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -54,6 +57,7 @@ class KwargsControllerTest < test_class
       xhr verb.to_sym, :test_kwargs, hello: 'world'
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       assert assigns(:xhr)
     end
 
@@ -65,6 +69,7 @@ class KwargsControllerTest < test_class
       end
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       assert assigns(:xhr)
     end
 
@@ -79,6 +84,7 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, xhr: true, params: { hello: 'world' })
       assert_equal({ 'hello' => 'world' }, assigns(:params))
       assert_nil assigns(:hello_header)
+      assert_nil assigns(:flash)
       assert assigns(:xhr)
     end
 
@@ -88,6 +94,7 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -99,6 +106,7 @@ class KwargsControllerTest < test_class
       end
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -112,6 +120,7 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, headers: { 'Hello': 'world' })
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
       refute assigns(:xhr)
     end
 
@@ -121,6 +130,7 @@ class KwargsControllerTest < test_class
       xhr(verb.to_sym, :test_kwargs, nil, 'Hello': 'world')
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
       assert assigns(:xhr)
     end
 
@@ -132,6 +142,7 @@ class KwargsControllerTest < test_class
       end
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
       assert assigns(:xhr)
     end
 
@@ -145,6 +156,79 @@ class KwargsControllerTest < test_class
       send(verb.to_sym, :test_kwargs, xhr: true, headers: { 'Hello': 'world' })
       assert_equal('world', assigns(:hello_header))
       assert_equal({}, assigns(:params))
+      assert_nil assigns(:flash)
+      assert assigns(:xhr)
+    end
+
+    define_method("test_#{verb}_old_flash_only") do
+      Rails::ForwardCompatibleControllerTests.ignore
+
+      send(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
+      refute assigns(:xhr)
+    end
+
+    define_method("test_#{verb}_old_flash_only__outputs_deprecation") do
+      Rails::ForwardCompatibleControllerTests.deprecate
+
+      assert_deprecated do
+        send(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      end
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
+      refute assigns(:xhr)
+    end
+
+    define_method("test_#{verb}_old_flash_only__raises_exception") do
+      assert_raise Exception do
+        send(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      end
+    end
+
+    define_method("test_#{verb}_new_flash_only") do
+      send(verb.to_sym, :test_kwargs, flash: { flashy: 'flash' })
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
+      refute assigns(:xhr)
+    end
+
+    define_method("test_xhr_#{verb}_old_flash_only") do
+      Rails::ForwardCompatibleControllerTests.ignore
+
+      xhr(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
+      assert assigns(:xhr)
+    end
+
+    define_method("test_xhr_#{verb}_old_flash_only__outputs_deprecation") do
+      Rails::ForwardCompatibleControllerTests.deprecate
+
+      assert_deprecated do
+        xhr(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      end
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
+      assert assigns(:xhr)
+    end
+
+    define_method("test_xhr_#{verb}_old_flash_only__raises_exception") do
+      assert_raise Exception do
+        xhr(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
+      end
+    end
+
+    define_method("test_xhr_#{verb}_new_flash_only") do
+      send(verb.to_sym, :test_kwargs, xhr: true, flash: { flashy: 'flash' })
+      assert_equal('flash', assigns(:flash))
+      assert_equal({}, assigns(:params))
+      assert_nil assigns(:hello_header)
       assert assigns(:xhr)
     end
 
