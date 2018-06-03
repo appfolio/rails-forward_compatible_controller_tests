@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [2.2.0] - 2018-06-03
+
+- Adds support for `flash` and `session` in controller tests
+
+### Fixed
+
+- Fixes issue where `headers` was incorrectly treated as a special keyword argument in controller tests
+
 ## [2.1.0] - 2018-04-30
 
 - Allow inclusion of the gem in Rails 5. In which case the gem does nothing.
