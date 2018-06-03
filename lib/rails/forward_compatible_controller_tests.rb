@@ -45,9 +45,11 @@ module Rails
 
     %i[get post patch put head delete].each do |method|
       define_method(method) do |action, *args|
+        controller_test = self.class < ActionController::TestCase
         request_params = args[0]&.dup
-        request_headers = args[1]&.dup
-        request_flash = args[2]&.dup
+        request_session = args[1]&.dup if controller_test
+        request_headers = args[1]&.dup unless controller_test
+        request_flash = args[2]&.dup if controller_test
 
         old_method = false
         xhr = false
@@ -55,39 +57,51 @@ module Rails
           xhr = request_params.delete(:xhr)
           if request_params[:params].is_a?(Hash)
             request_params.merge!(request_params.delete(:params) || {})
-            request_headers = request_params.delete(:headers) || request_headers
-            request_flash = request_params.delete(:flash) || request_flash
+            request_session = request_params.delete(:session) || request_session if controller_test
+            request_headers = request_params.delete(:headers) || request_headers unless controller_test
+            request_flash = request_params.delete(:flash) || request_flash if controller_test
           elsif request_params.key?(:params)
-            request_flash = request_params[:flash]
-            request_headers = request_params[:headers]
+            request_flash = request_params[:flash] if controller_test
+            request_session = request_params[:session] if controller_test
+            request_headers = request_params[:headers] unless controller_test
             request_params = request_params[:params]
-          elsif request_params.key?(:headers)
-            request_flash = request_params[:flash]
+          elsif request_params.key?(:headers) && !controller_test
+            request_flash = nil
+            request_session = nil
             request_headers = request_params[:headers]
             request_params = nil
-          elsif request_params.key?(:flash)
+          elsif request_params.key?(:session) && controller_test
             request_flash = request_params[:flash]
+            request_session = request_params[:session]
+            request_headers = nil
+            request_params = nil
+          elsif request_params.key?(:flash) && controller_test
+            request_flash = request_params[:flash]
+            request_session = nil
             request_headers = nil
             request_params = nil
           elsif !xhr
             old_method = true
           end
-        elsif request_headers.is_a?(Hash) || request_flash.is_a?(Hash)
+        elsif request_headers.is_a?(Hash) || request_session.is_a?(Hash) ||
+              request_flash.is_a?(Hash)
           old_method = true
         end
 
         raise Exception, ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception? && old_method
         ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
 
-        ForwardCompatibleControllerTests.send(:with_ignore) do
-          if self.class < ActionController::TestCase
-            return xhr(method, action, request_params, request_headers, request_flash)
-          else
-            return xhr(method, action, request_params, request_headers)
+        if xhr
+          ForwardCompatibleControllerTests.send(:with_ignore) do
+            if controller_test
+              return xhr(method, action, request_params, request_session, request_flash)
+            else
+              return xhr(method, action, request_params, request_headers)
+            end
           end
-        end if xhr
-        if self.class < ActionController::TestCase
-          super(action, request_params, request_headers, request_flash)
+        end
+        if controller_test
+          super(action, request_params, request_session, request_flash)
         else
           super(action, request_params, request_headers)
         end
