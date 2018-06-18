@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.3.0] - 2018-06-18
+
 - Adds support for `format` in controller tests
 
 ## [2.2.0] - 2018-06-03
