@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Adds support for `format` in controller tests
+
 ## [2.2.0] - 2018-06-03
 
 - Adds support for `flash` and `session` in controller tests

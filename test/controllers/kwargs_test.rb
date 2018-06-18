@@ -25,6 +25,11 @@ class KwargsControllerTest < test_class
       refute assigns(:xhr)
     end
 
+    define_method("test_#{verb}_old_params_only__allows_format_keyword") do
+      send(verb.to_sym, :test_kwargs, format: :json)
+      assert_equal({ 'format' => 'json' }, assigns(:params))
+    end
+
     define_method("test_#{verb}_old_params_only__outputs_deprecation") do
       Rails::ForwardCompatibleControllerTests.deprecate
 

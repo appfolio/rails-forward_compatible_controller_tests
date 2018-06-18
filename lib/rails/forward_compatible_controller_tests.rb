@@ -50,11 +50,13 @@ module Rails
         request_session = args[1]&.dup if controller_test
         request_headers = args[1]&.dup unless controller_test
         request_flash = args[2]&.dup if controller_test
+        request_format = nil
 
         old_method = false
         xhr = false
         if request_params && request_params.is_a?(Hash)
           xhr = request_params.delete(:xhr)
+          request_format = request_params.delete(:format)
           if request_params[:params].is_a?(Hash)
             request_params.merge!(request_params.delete(:params) || {})
             request_session = request_params.delete(:session) || request_session if controller_test
@@ -80,7 +82,7 @@ module Rails
             request_session = nil
             request_headers = nil
             request_params = nil
-          elsif !xhr
+          elsif !xhr && !request_format
             old_method = true
           end
         elsif request_headers.is_a?(Hash) || request_session.is_a?(Hash) ||
@@ -90,6 +92,8 @@ module Rails
 
         raise Exception, ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception? && old_method
         ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
+
+        request_params[:format] = request_format if request_format
 
         if xhr
           ForwardCompatibleControllerTests.send(:with_ignore) do
