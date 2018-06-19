@@ -51,8 +51,8 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_new_params_only") do
-      send(verb.to_sym, :test_kwargs, params: { hello: 'world' })
-      assert_equal({ 'hello' => 'world' }, assigns(:params))
+      send(verb.to_sym, :test_kwargs, params: { hello: 'world', session: { a: 'foo' } })
+      assert_equal({ 'hello' => 'world', 'session' => { 'a' => 'foo' } }, assigns(:params))
       assert_nil assigns(:hello_header)
       assert_nil assigns(:session)
       assert_nil assigns(:flash)
