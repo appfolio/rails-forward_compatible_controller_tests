@@ -62,11 +62,6 @@ module Rails
             request_session = request_params.delete(:session) || request_session if controller_test
             request_headers = request_params.delete(:headers) || request_headers unless controller_test
             request_flash = request_params.delete(:flash) || request_flash if controller_test
-          elsif request_params.key?(:params)
-            request_flash = request_params[:flash] if controller_test
-            request_session = request_params[:session] if controller_test
-            request_headers = request_params[:headers] unless controller_test
-            request_params = request_params[:params]
           elsif request_params.key?(:headers) && !controller_test
             request_flash = nil
             request_session = nil
