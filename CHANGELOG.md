@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix bug with eplicitly provided keyword argument `params` named
+  `session`, `headers`, and `flash` in XHR requests.
+
 ## [2.3.1] - 2018-06-19
 
 - Add support for explicitly provided keyword argument `params` named

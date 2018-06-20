@@ -54,7 +54,7 @@ module Rails
 
         old_method = false
         xhr = false
-        if request_params && request_params.is_a?(Hash)
+        if args.size == 1
           xhr = request_params.delete(:xhr)
           request_format = request_params.delete(:format)
           if request_params[:params].is_a?(Hash)
@@ -88,7 +88,10 @@ module Rails
         raise Exception, ERROR_MESSAGE if ForwardCompatibleControllerTests.raise_exception? && old_method
         ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
 
-        request_params[:format] = request_format if request_format
+        if request_format
+          request_params ||= {}
+          request_params[:format] = request_format
+        end
 
         if xhr
           ForwardCompatibleControllerTests.send(:with_ignore) do

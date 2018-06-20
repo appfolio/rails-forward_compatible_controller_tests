@@ -600,6 +600,15 @@ class KwargsControllerTest < test_class
       assert assigns(:xhr)
     end
 
+    define_method("test_xhr_#{verb}_new_params_and_session_and_format") do
+      send(verb.to_sym, :test_kwargs, format: :json, params: { session: { a: 1 } }, xhr: true)
+      assert_equal({ 'session' => { 'a' => 1 }, 'format' => 'json' }, assigns(:params))
+      assert_nil assigns(:session)
+      assert_nil assigns(:flash)
+      assert_nil assigns(:hello_header)
+      assert assigns(:xhr)
+    end
+
     define_method("test_xhr_#{verb}_new_params_and_session_and_flash__does_not_output_warning") do
       Rails::ForwardCompatibleControllerTests.deprecate
 
