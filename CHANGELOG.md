@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [2.3.2] - 2018-06-20
+
+### Fixed
+
 - Fix bug with eplicitly provided keyword argument `params` named
   `session`, `headers`, and `flash` in XHR requests.
 

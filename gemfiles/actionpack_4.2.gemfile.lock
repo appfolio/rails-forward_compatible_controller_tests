@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    rails-forward_compatible_controller_tests (2.3.0)
+    rails-forward_compatible_controller_tests (2.3.2)
       actionpack (>= 4.2, < 5.1)
 
 GEM
