@@ -7,14 +7,20 @@
 
 ## [2.3.1] - 2018-06-19
 
+### Fixed
+
 - Add support for explicitly provided keyword argument `params` named
   `session`, `headers`, and `flash`.
 
 ## [2.3.0] - 2018-06-18
 
+### Added
+
 - Adds support for `format` in controller tests
 
 ## [2.2.0] - 2018-06-03
+
+### Added
 
 - Adds support for `flash` and `session` in controller tests
 
