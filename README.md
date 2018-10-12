@@ -74,9 +74,7 @@ to make the switch to Rails 5.
 
 After checking out the repo, run `bin/setup` to install dependencies.
 
-To run minitest tests using Rails 4.2, run `bundle exec appraisal actionpack-4.2 rake test`.
-
-To run rspec tests, run `rspec`. The rspec tests only test that the library generally works with rspec.   
+To run minitest and rspec tests using Rails 4.2, run `bundle exec appraisal actionpack-4.2 rake`.
 
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
