@@ -1,6 +1,6 @@
 # Rails::ForwardCompatibleControllerTests
 
-Backport Rails 5 style controller/integration testing syntax using kwargs to Rails 4
+Backport Rails 5 style controller/integration testing syntax using kwargs to Rails 4.  Supports minitest and rspec.
 
 ## Installation
 
@@ -22,6 +22,13 @@ At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar f
 
 ```ruby
 require 'rails/forward_compatible_controller_tests'
+```
+
+If using rspec, add the following lines to your rspec config:
+
+```ruby
+config.include Rails::ForwardCompatibleControllerTests, type: :controller
+config.include Rails::ForwardCompatibleControllerTests, type: :request
 ```
 
 ## Usage
@@ -67,7 +74,9 @@ to make the switch to Rails 5.
 
 After checking out the repo, run `bin/setup` to install dependencies.
 
-To run tests using Rails 4.2, run `bundle exec appraisal actionpack-4.2 rake test`.   
+To run minitest tests using Rails 4.2, run `bundle exec appraisal actionpack-4.2 rake test`.
+
+To run rspec tests, run `rspec`. The rspec tests only test that the library generally works with rspec.   
 
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
