@@ -45,7 +45,7 @@ module Rails
 
     %i[get post patch put head delete].each do |method|
       define_method(method) do |action, *args|
-        controller_test = self.class < ActionController::TestCase
+        controller_test = self.class.try(:metadata)&.[](:type) == :controller || self.class < ActionController::TestCase
         request_params = args[0]&.dup
         request_session = args[1]&.dup if controller_test
         request_headers = args[1]&.dup unless controller_test
