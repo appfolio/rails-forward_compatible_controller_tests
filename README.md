@@ -74,7 +74,11 @@ to make the switch to Rails 5.
 
 After checking out the repo, run `bin/setup` to install dependencies.
 
-To run minitest and rspec tests using Rails 4.2, run `bundle exec appraisal actionpack-4.2 rake`.
+This library uses [Appraisal](https://github.com/thoughtbot/appraisal) to run specs in Rails 4 and 5:
+- `bundle exec appraisal actionpack-4.2 rake`.
+- `bundle exec appraisal actionpack-5.0 rake`.
+
+The library is a no-op when used with Rails 5 (it doesn't affect the implementation of controller tests). You can run the tests in Rails 5 mode to ensure that the behaviour native to Rails 5 is the same as the behaviour in Rails 4 with the library.
 
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
