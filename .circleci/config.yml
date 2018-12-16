@@ -14,5 +14,11 @@ jobs:
       - run: bundle exec appraisal install
 
       - run:
+          name: Run test suite with Minitest
           command: |
-            bundle exec appraisal rake test
+            bundle exec appraisal rake test_minitest
+
+      - run:
+          name: Run test suite with Rspec
+          command: |
+            bundle exec appraisal rake test_rspec
