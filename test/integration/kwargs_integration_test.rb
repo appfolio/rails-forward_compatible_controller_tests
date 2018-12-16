@@ -46,6 +46,18 @@ class KwargsIntegrationTest < test_class
       end
     end
 
+    define_method("test_#{verb}_new_string_params_only") do
+      send(verb.to_sym, '/kwargs/test_kwargs', params: "string_params")
+      if @response.body.size > 0
+        response = JSON.parse(@response.body)
+        assert_equal({ 'string_params' => nil }, response['params'])
+        assert_nil response['hello_header']
+        refute response['xhr']
+      else
+        assert_equal 'head', verb
+      end
+    end
+
     define_method("test_#{verb}_new_blank_headers_only") do
       send(verb.to_sym, '/kwargs/test_kwargs', headers: nil)
       if @response.body.size > 0
