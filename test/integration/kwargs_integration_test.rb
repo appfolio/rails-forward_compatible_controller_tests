@@ -1,14 +1,6 @@
 require 'test_helper'
 
-class DummyIntegrationTestClass; end
-
-test_class = if ActionPack.gem_version < Gem::Version.new('5.0.0')
-               ActionDispatch::IntegrationTest
-             else
-               DummyIntegrationTestClass
-             end
-
-class KwargsIntegrationTest < test_class
+class KwargsIntegrationTest < ActionDispatch::IntegrationTest
   def setup
     Rails::ForwardCompatibleControllerTests.raise_exception
   end
@@ -29,7 +21,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_#{verb}_old_params_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, '/kwargs/test_kwargs', hello: 'world')
       end
     end
@@ -39,6 +31,18 @@ class KwargsIntegrationTest < test_class
       if @response.body.size > 0
         response = JSON.parse(@response.body)
         assert_equal({ 'hello' => 'world' }, response['params'])
+        assert_nil response['hello_header']
+        refute response['xhr']
+      else
+        assert_equal 'head', verb
+      end
+    end
+
+    define_method("test_#{verb}_new_string_params_only") do
+      send(verb.to_sym, '/kwargs/test_kwargs', params: "string_params")
+      if @response.body.size > 0
+        response = JSON.parse(@response.body)
+        assert_equal({ 'string_params' => nil }, response['params'])
         assert_nil response['hello_header']
         refute response['xhr']
       else
@@ -85,7 +89,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_params_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, '/kwargs/test_kwargs', hello: 'world'
       end
     end
@@ -117,7 +121,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_#{verb}_old_headers_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, '/kwargs/test_kwargs', nil, 'Hello': 'world')
       end
     end
@@ -149,7 +153,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_headers_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr(verb.to_sym, '/kwargs/test_kwargs', nil, 'Hello': 'world')
       end
     end
@@ -181,7 +185,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_#{verb}_old_params_and_headers__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' })
       end
     end
@@ -229,7 +233,7 @@ class KwargsIntegrationTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_params_and_headers__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, '/kwargs/test_kwargs', { hello: 'world' }, { 'Hello': 'world' }
       end
     end

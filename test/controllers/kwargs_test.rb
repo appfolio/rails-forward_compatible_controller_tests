@@ -1,14 +1,6 @@
 require 'test_helper'
 
-class DummyControllerTestClass; end
-
-test_class = if ActionPack.gem_version < Gem::Version.new('5.0.0')
-               ActionController::TestCase
-             else
-               DummyControllerTestClass
-             end
-
-class KwargsControllerTest < test_class
+class KwargsControllerTest < ActionController::TestCase
   def setup
     Rails::ForwardCompatibleControllerTests.raise_exception
   end
@@ -45,7 +37,7 @@ class KwargsControllerTest < test_class
 
 
     define_method("test_#{verb}_old_params_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, hello: 'world')
       end
     end
@@ -85,7 +77,7 @@ class KwargsControllerTest < test_class
 
 
     define_method("test_xhr_#{verb}_old_params_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, :test_kwargs, hello: 'world'
       end
     end
@@ -124,7 +116,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_session_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, nil, sesh: 'shin')
       end
     end
@@ -163,7 +155,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_session_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr(verb.to_sym, :test_kwargs, nil, sesh: 'shin')
       end
     end
@@ -200,7 +192,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_flash_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
       end
     end
@@ -236,7 +228,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_flash_only__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr(verb.to_sym, :test_kwargs, nil, nil, flashy: 'flash')
       end
     end
@@ -274,7 +266,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_params_and_session__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, { hello: 'world' }, { sesh: 'shin' })
       end
     end
@@ -313,7 +305,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_params_and_session__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, :test_kwargs, { hello: 'world' }, { sesh: 'shin' }
       end
     end
@@ -365,7 +357,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_params_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, { hello: 'world' }, nil, { flashy: 'flash' })
       end
     end
@@ -404,7 +396,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_params_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, :test_kwargs, { hello: 'world' }, nil, { flashy: 'flash' }
       end
     end
@@ -456,7 +448,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_session_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, nil, { sesh: 'shin' }, { flashy: 'flash' })
       end
     end
@@ -495,7 +487,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_session_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, :test_kwargs, { sesh: 'shin' }, { flashy: 'flash' }
       end
     end
@@ -547,7 +539,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_#{verb}_old_params_and_session_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         send(verb.to_sym, :test_kwargs, { hello: 'world' }, { sesh: 'shin' }, { flashy: 'flash' })
       end
     end
@@ -586,7 +578,7 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_old_params_and_session_and_flash__raises_exception") do
-      assert_raise Exception do
+      assert_raise_in_rails_4(Exception) do
         xhr verb.to_sym, :test_kwargs, { hello: 'world' }, { sesh: 'shin' }, { flashy: 'flash' }
       end
     end
@@ -601,8 +593,8 @@ class KwargsControllerTest < test_class
     end
 
     define_method("test_xhr_#{verb}_new_params_and_session_and_format") do
-      send(verb.to_sym, :test_kwargs, format: :json, params: { session: { a: 1 } }, xhr: true)
-      assert_equal({ 'session' => { 'a' => 1 }, 'format' => 'json' }, assigns(:params))
+      send(verb.to_sym, :test_kwargs, format: :json, params: { session: { a: "foo" } }, xhr: true)
+      assert_equal({ 'session' => { 'a' => 'foo' }, 'format' => 'json' }, assigns(:params))
       assert_nil assigns(:session)
       assert_nil assigns(:flash)
       assert_nil assigns(:hello_header)
