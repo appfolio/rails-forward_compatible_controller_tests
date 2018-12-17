@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support rspec specs
+
+- Support string params for integration tests
+
 ## [2.3.2] - 2018-06-20
 
 ### Fixed
