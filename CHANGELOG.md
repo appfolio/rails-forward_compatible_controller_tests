@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.4.0] - 2018-12-17
+
 ### Added
 
 - Support rspec specs
