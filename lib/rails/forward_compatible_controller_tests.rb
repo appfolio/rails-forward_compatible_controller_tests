@@ -1,5 +1,4 @@
 require "rails/forward_compatible_controller_tests/version"
-require "rails/test_help"
 
 module Rails
   module ForwardCompatibleControllerTests
