@@ -61,6 +61,11 @@ module Rails
             request_headers = request_params.delete(:headers) || request_headers unless controller_test
             request_flash = request_params.delete(:flash) || request_flash if controller_test
             request_params.merge!(request_params.delete(:params) || {})
+          elsif request_params[:body].is_a?(String) && controller_test
+            request_flash = nil
+            request_session = nil
+            request_headers = request_params.delete(:headers)
+            request_params = request_params.delete(:body) || ""
           elsif request_params[:params].is_a?(String) && !controller_test
             request_flash = nil
             request_session = nil
@@ -93,8 +98,13 @@ module Rails
         ActiveSupport::Deprecation.warn(ERROR_MESSAGE) if ForwardCompatibleControllerTests.deprecated? && old_method
 
         if request_format
-          request_params ||= {}
-          request_params[:format] = request_format
+          if request_params.is_a?(String)
+            request_session ||= {}
+            request_session[:format] = request_format
+          else
+            request_params ||= {}
+            request_params[:format] = request_format
+          end
         end
 
         if xhr
