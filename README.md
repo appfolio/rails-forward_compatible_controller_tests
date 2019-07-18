@@ -18,7 +18,7 @@ Or install it yourself as:
 
     $ gem install rails-forward_compatible_controller_tests
 
-At the appropriate spot in your `test_helper.rb`, `spec_helper.rb`, or similar file add the following line:
+At the appropriate spot in your `test_helper.rb`, `rails_helper.rb`, or similar file add the following line:
 
 ```ruby
 require 'rails/forward_compatible_controller_tests'
