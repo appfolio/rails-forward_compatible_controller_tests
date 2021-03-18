@@ -56,16 +56,16 @@ module Rails
         if args.size == 1
           xhr = request_params.delete(:xhr)
           request_format = request_params.delete(:format)
-          if request_params[:params].is_a?(Hash)
+          if request_params[:body].is_a?(String) && controller_test
+            request_flash = nil
+            request_headers = request_params.delete(:headers)
+            request_session = request_params.delete(:params) || {}
+            request_params = request_params.delete(:body) || ""
+          elsif request_params[:params].is_a?(Hash)
             request_session = request_params.delete(:session) || request_session if controller_test
             request_headers = request_params.delete(:headers) || request_headers unless controller_test
             request_flash = request_params.delete(:flash) || request_flash if controller_test
             request_params.merge!(request_params.delete(:params) || {})
-          elsif request_params[:body].is_a?(String) && controller_test
-            request_flash = nil
-            request_session = nil
-            request_headers = request_params.delete(:headers)
-            request_params = request_params.delete(:body) || ""
           elsif request_params[:params].is_a?(String) && !controller_test
             request_flash = nil
             request_session = nil
